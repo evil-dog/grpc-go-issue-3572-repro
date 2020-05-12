@@ -1,0 +1,31 @@
+version: "2"
+
+services:
+  greeter-client:
+    image: grpc-example-client-orig
+
+    depends_on:
+      - greeter-server
+
+    networks:
+      - greeter-internal
+
+    environment:
+      - GRPC_GO_LOG_VERBOSITY_LEVEL=99
+      - GRPC_GO_LOG_SEVERITY_LEVEL=debug
+      - GODEBUG=netdns=1
+
+  greeter-server:
+    image: grpc-example-server
+
+    networks:
+      greeter-internal:
+
+    environment:
+      - GRPC_GO_LOG_VERBOSITY_LEVEL=99
+      - GRPC_GO_LOG_SEVERITY_LEVEL=debug
+      - GODEBUG=netdns=1
+
+networks:
+  greeter-internal:
+    internal: true
